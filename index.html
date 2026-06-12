@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vocabulary Practice: Thematic Progression</title>
+    <style>
+        :root {
+            --brand-color: #202065;
+            --brand-light: #ececf5;
+            --text-color: #333333;
+            --bg-color: #f8f9fa;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        h1 {
+            color: var(--brand-color);
+            text-align: center;
+            border-bottom: 2px solid var(--brand-light);
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            color: var(--brand-color);
+            font-size: 1.4rem;
+            margin-top: 0;
+        }
+
+        .vocab-box {
+            background-color: var(--brand-light);
+            color: var(--brand-color);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            word-spacing: 15px;
+        }
+
+        .exercise-card {
+            border-left: 4px solid var(--brand-color);
+            background: #ffffff;
+            padding: 20px 25px;
+            margin-bottom: 30px;
+            border-radius: 0 8px 8px 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            position: relative;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--brand-light);
+            color: var(--brand-color);
+        }
+
+        select {
+            padding: 6px;
+            font-size: 1rem;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            outline: none;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        select:focus {
+            border-color: var(--brand-color);
+        }
+
+        input[type="text"] {
+            border: none;
+            border-bottom: 2px solid #ccc;
+            padding: 5px;
+            font-size: 1rem;
+            width: 150px;
+            background: transparent;
+            transition: all 0.3s;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-bottom: 2px solid var(--brand-color);
+        }
+
+        input.short-input {
+            width: 50px;
+            text-align: center;
+        }
+
+        input.long-input {
+            width: 80%;
+        }
+
+        textarea {
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            padding: 10px;
+            font-family: inherit;
+            font-size: 1rem;
+            resize: vertical;
+            margin-top: 10px;
+        }
+
+        .story-text {
+            background: var(--brand-light);
+            padding: 15px;
+            border-radius: 8px;
+            font-style: italic;
+            margin: 15px 0;
+            line-height: 2;
+        }
+
+        /* Verification Styles */
+        .btn-action {
+            display: inline-block;
+            background-color: var(--brand-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background-color 0.3s;
+        }
+
+        .btn-action:hover {
+            background-color: #151545;
+        }
+
+        .input-correct {
+            border-bottom: 2px solid #28a745 !important;
+            background-color: #e8faed;
+            color: #155724;
+        }
+
+        .input-error {
+            border-bottom: 2px solid #dc3545 !important;
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        select.input-correct {
+            border: 2px solid #28a745 !important;
+            background-color: #e8faed;
+        }
+
+        select.input-error {
+            border: 2px solid #dc3545 !important;
+            background-color: #f8d7da;
+        }
+
+        .feedback-box {
+            display: none;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+
+        .feedback-success {
+            background-color: #e8faed;
+            border-left: 4px solid #28a745;
+            color: #155724;
+            display: block;
+        }
+
+        .feedback-error {
+            background-color: #f8d7da;
+            border-left: 4px solid #dc3545;
+            color: #721c24;
+            display: block;
+        }
+
+        .feedback-info {
+            background-color: var(--brand-light);
+            border-left: 4px solid var(--brand-color);
+            color: var(--text-color);
+            display: none; /* Controlled by JS */
+            font-weight: normal;
+        }
+
+        .feedback-info h4 {
+            color: var(--brand-color);
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        .feedback-info ul {
+            margin-top: 0;
+            padding-left: 20px;
+        }
+        
+        .feedback-info p {
+            margin-bottom: 8px;
+        }
+        
+        @media print {
+            .btn-action, .feedback-box { display: none !important; }
+            body { background: white; }
+            .container { box-shadow: none; padding: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Vocabulary Practice</h1>
+    
+    <div class="vocab-box">
+        afraid &bull; agree &bull; angry &bull; arrive &bull; attack &bull; bottom &bull; clever &bull; cruel &bull; finally &bull; hide
+    </div>
+
+    <!-- Exercise 1 -->
+    <div class="exercise-card" id="ex1">
+        <h2>Exercise 1: Match the Word to the Meaning (Easy)</h2>
+        <p>Select the correct letter (a-j) that matches the vocabulary word.</p>
+        <table>
+            <tr>
+                <th>Match</th>
+                <th>Word</th>
+                <th>Meaning</th>
+            </tr>
+            <tr>
+                <td>
+                    <select data-answer="d">
+                        <option value="">--</option><option value="a">a</option><option value="b">b</option><option value="c">c</option><option value="d">d</option><option value="e">e</option><option value="f">f</option><option value="g">g</option><option value="h">h</option><option value="i">i</option><option value="j">j</option>
+                    </select>
+                </td>
+                <td><strong>afraid</strong></td>
+                <td>a. to reach a destination</td>
+            </tr>
+            <tr>
+                <td>
+                    <select data-answer="g">
+                        <option value="">--</option><option value="a">a</option><option value="b">b</option><option value="c">c</option><option value="d">d</option><option value="e">e</option><option value="f">f</option><option value="g">g</option><option value="h">h</option><option value="i">i</option><option value="j">j</option>
+                    </select>
+                </td>
+                <td><strong>agree</strong></td>
+                <td>b. intelligent and quick-thinking</td>
+            </tr>
+            <tr>
+                <td>
+                    <select data-answer="h">
+                        <option value="">--</option><option value="a">a</option><option value="b">b</option><option value="c">c</option><option value="d">d</option><option value="e">e</option><option value="f">f</option><option value="g">g</option><option value="h">h</option><option value="i">i</option><option value="j">j</option>
+                    </select>
+                </td>
+                <td><strong>angry</strong></td>
+                <td>c. the lowest point or part of something</td>
+            </tr>
+            <tr>
+                <td>
+                    <select data-answer="a">
+                        <option value="">--</option><option value="a">a</option><option value="b">b</option><option value="c">c</option><option value="d">d</option><option value="e">e</option><option value="f">f</option><option value="g">g</option><option value="h">h</option><option value="i">i</option><option value="j">j</option>
+                    </select>
+                </td>
+                <td><strong>arrive</strong></td>
+                <td>d. feeling fear or worry</td>
+            </tr>
+            <tr>
+                <td>
+                    <select data-answer="j">
+                        <option value="">--</option><option value="a">a</option><option value="b">b</option><option value="c">c</option><option value="d">d</option><option value="e">e</option><option value="f">f</option><option value="g">g</option><option value="h">h</option><option value="i">i</option><option value="j">j</option>
+                    </select>
+                </td>
+                <td><strong>attack</strong></td>
+                <td>e. after a long time; in the end</td>
+            </tr>
+            <tr>
+                <td>
+                    <select data-answer="c">
+                        <option value="">--</option><option value="a">a</option><option value="b">b</option><option value="c">c</option><option value="d">d</option><option value="e">e</option><option value="f">f</option><option value="g">g</option><option value="h">h</option><option value="i">i</option><option value="j">j</option>
+                    </select>
+                </td>
+                <td><strong>bottom</strong></td>
+                <td>f. to keep out of sight</td>
+            </tr>
+            <tr>
+                <td>
+                    <select data-answer="b">
+                        <option value="">--</option><option value="a">a</option><option value="b">b</option><option value="c">c</option><option value="d">d</option><option value="e">e</option><option value="f">f</option><option value="g">g</option><option value="h">h</option><option value="i">i</option><option value="j">j</option>
+                    </select>
+                </td>
+                <td><strong>clever</strong></td>
+                <td>g. to share the same opinion</td>
+            </tr>
+            <tr>
+                <td>
+                    <select data-answer="i">
+                        <option value="">--</option><option value="a">a</option><option value="b">b</option><option value="c">c</option><option value="d">d</option><option value="e">e</option><option value="f">f</option><option value="g">g</option><option value="h">h</option><option value="i">i</option><option value="j">j</option>
+                    </select>
+                </td>
+                <td><strong>cruel</strong></td>
+                <td>h. feeling strong annoyance or displeasure</td>
+            </tr>
+            <tr>
+                <td>
+                    <select data-answer="e">
+                        <option value="">--</option><option value="a">a</option><option value="b">b</option><option value="c">c</option><option value="d">d</option><option value="e">e</option><option value="f">f</option><option value="g">g</option><option value="h">h</option><option value="i">i</option><option value="j">j</option>
+                    </select>
+                </td>
+                <td><strong>finally</strong></td>
+                <td>i. willfully causing pain or suffering to others</td>
+            </tr>
+            <tr>
+                <td>
+                    <select data-answer="f">
+                        <option value="">--</option><option value="a">a</option><option value="b">b</option><option value="c">c</option><option value="d">d</option><option value="e">e</option><option value="f">f</option><option value="g">g</option><option value="h">h</option><option value="i">i</option><option value="j">j</option>
+                    </select>
+                </td>
+                <td><strong>hide</strong></td>
+                <td>j. to take aggressive action against someone or something</td>
+            </tr>
+        </table>
+        <button class="btn-action" onclick="checkAnswers('ex1')">Check Answers</button>
+        <div class="feedback-box"></div>
+    </div>
+
+    <!-- Exercise 2 -->
+    <div class="exercise-card" id="ex2">
+        <h2>Exercise 2: Complete the Sentences (Easy)</h2>
+        <p>Use the correct word to complete each sentence. Notice how all the sentences are about helping animals.</p>
+        <ol>
+            <li>The frightened puppy tried to <input type="text" data-answer="hide"> under the parked car.</li>
+            <li>It is very <input type="text" data-answer="cruel"> to leave a pet outside in the freezing cold.</li>
+            <li>The animal doctor will <input type="text" data-answer="arrive"> soon to help the injured bird.</li>
+            <li>I <input type="text" data-answer="agree"> with you that we should leave food out for the stray cats.</li>
+            <li>The hungry stray dog started to <input type="text" data-answer="attack"> the plastic garbage bag.</li>
+            <li>We found the missing kitten at the <input type="text" data-answer="bottom"> of a deep cardboard box.</li>
+            <li>The little bird was very <input type="text" data-answer="afraid"> of the loud thunder.</li>
+            <li>My mom was <input type="text" data-answer="angry"> when the dog chewed up her favorite shoes.</li>
+            <li>The <input type="text" data-answer="clever"> bird learned how to open the birdfeeder by itself.</li>
+            <li>After hours of searching the neighborhood, we <input type="text" data-answer="finally"> found the lost puppy.</li>
+        </ol>
+        <button class="btn-action" onclick="checkAnswers('ex2')">Check Answers</button>
+        <div class="feedback-box"></div>
+    </div>
+
+    <!-- Exercise 3 -->
+    <div class="exercise-card" id="ex3">
+        <h2>Exercise 3: Build a Sentence (Easy)</h2>
+        <p>Make one original sentence using each word. Try to write sentences about animals, pets, or helping others.</p>
+        <ol>
+            <li><strong>afraid &rarr;</strong> <input type="text" class="long-input"></li>
+            <li><strong>agree &rarr;</strong> <input type="text" class="long-input"></li>
+            <li><strong>angry &rarr;</strong> <input type="text" class="long-input"></li>
+            <li><strong>arrive &rarr;</strong> <input type="text" class="long-input"></li>
+            <li><strong>attack &rarr;</strong> <input type="text" class="long-input"></li>
+            <li><strong>clever &rarr;</strong> <input type="text" class="long-input"></li>
+            <li><strong>cruel &rarr;</strong> <input type="text" class="long-input"></li>
+            <li><strong>hide &rarr;</strong> <input type="text" class="long-input"></li>
+        </ol>
+        <button class="btn-action" onclick="toggleSubjectiveFeedback('ex3')">Show Suggestions & Tips</button>
+        <div class="feedback-info feedback-box">
+            <h4>💡 Tips</h4>
+            <p>Make sure your sentences start with a capital letter and end with a period.</p>
+            <h4>📝 Suggested Answers (Examples)</h4>
+            <ul>
+                <li><strong>afraid:</strong> The little kitten was afraid of the loud thunder.</li>
+                <li><strong>agree:</strong> I agree that we should give the dog some water.</li>
+                <li><strong>angry:</strong> The bear became angry when we got too close to its food.</li>
+                <li><strong>clever:</strong> The clever monkey figured out how to open the cage.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Exercise 4 -->
+    <div class="exercise-card" id="ex4">
+        <h2>Exercise 4: Personal Questions (Easy)</h2>
+        <p>Answer the following questions with complete sentences.</p>
+        
+        <h4>afraid & hide</h4>
+        <p>1. What kind of animals make you feel afraid?<br><textarea rows="2"></textarea></p>
+        <p>2. When an animal is afraid, where does it usually like to hide?<br><textarea rows="2"></textarea></p>
+        
+        <h4>arrive & angry</h4>
+        <p>3. What time do you usually arrive home from school?<br><textarea rows="2"></textarea></p>
+        <p>4. Would your parents be angry if you brought a stray animal home without asking?<br><textarea rows="2"></textarea></p>
+        
+        <h4>agree & clever</h4>
+        <p>5. Do you agree that families should adopt pets from the street instead of buying them?<br><textarea rows="2"></textarea></p>
+        <p>6. What is the most clever thing you have ever seen an animal do?<br><textarea rows="2"></textarea></p>
+        
+        <button class="btn-action" onclick="toggleSubjectiveFeedback('ex4')">Show Suggestions & Tips</button>
+        <div class="feedback-info feedback-box">
+            <h4>💡 Tips</h4>
+            <p>Always restate part of the question in your answer. Since these are your personal opinions, there are no wrong answers!</p>
+            <h4>📝 Suggested Answers</h4>
+            <ol>
+                <li>I am <strong>afraid</strong> of big spiders and snakes because they move fast.</li>
+                <li>When an animal is <strong>afraid</strong>, it usually likes to <strong>hide</strong> under a bed or in a dark corner.</li>
+                <li>I usually <strong>arrive</strong> home from school at 4:30 PM.</li>
+                <li>Yes, my parents would be very <strong>angry</strong> if I brought a stray animal home without asking them first.</li>
+                <li>Yes, I <strong>agree</strong> because stray pets need a safe home and a loving family.</li>
+                <li>The most <strong>clever</strong> thing I saw was a dog opening a door by pulling the handle.</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- Exercise 5 -->
+    <div class="exercise-card" id="ex5">
+        <h2>Exercise 5: Dialogue Practice (Intermediate)</h2>
+        <p>Imagine your friend Tariq just found a stray animal. Answer his questions using the target vocabulary.</p>
+        <p><strong>1. Tariq:</strong> I looked in the box and the kitten looked so <strong>afraid</strong>. What makes you afraid?<br>
+        <strong>You:</strong> <input type="text" class="long-input"></p>
+        
+        <p><strong>2. Tariq:</strong> It tried to <strong>hide</strong> under my jacket. Where is a good place for it to hide safely?<br>
+        <strong>You:</strong> <input type="text" class="long-input"></p>
+        
+        <p><strong>3. Tariq:</strong> I hope my mom isn't <strong>angry</strong>. What usually makes your parents angry?<br>
+        <strong>You:</strong> <input type="text" class="long-input"></p>
+        
+        <p><strong>4. Tariq:</strong> I need a <strong>clever</strong> idea to convince her to keep it. Do you have any clever ideas?<br>
+        <strong>You:</strong> <input type="text" class="long-input"></p>
+        
+        <button class="btn-action" onclick="toggleSubjectiveFeedback('ex5')">Show Suggestions & Tips</button>
+        <div class="feedback-info feedback-box">
+            <h4>💡 Tips</h4>
+            <p>Try to answer Tariq as if you are having a real, natural conversation with a friend.</p>
+            <h4>📝 Suggested Answers</h4>
+            <ol>
+                <li>I am <strong>afraid</strong> of the dark and loud noises.</li>
+                <li>It could <strong>hide</strong> under your bed or in a soft blanket in the closet.</li>
+                <li>My parents get <strong>angry</strong> when I don't clean my room or do my homework.</li>
+                <li>A <strong>clever</strong> idea is to show her how quiet the kitten is and promise to clean up after it.</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- Exercise 6 -->
+    <div class="exercise-card" id="ex6">
+        <h2>Exercise 6: Paragraph Building (Intermediate)</h2>
+        <p>Read the sentences and number them from <strong>1 to 5</strong> to make a correct, logical paragraph.</p>
+        
+        <p><input type="text" class="short-input" data-answer="2"> <strong>A.</strong> He looked at the <strong>bottom</strong> of the box and found a tiny kitten that looked very <strong>afraid</strong>.</p>
+        <p><input type="text" class="short-input" data-answer="5"> <strong>B.</strong> But after Tariq used a <strong>clever</strong> trick to calm the kitten down, his mother had to <strong>agree</strong> it was too cute to send away.</p>
+        <p><input type="text" class="short-input" data-answer="1"> <strong>C.</strong> Yesterday, just as Tariq was about to <strong>arrive</strong> home, he heard a noise coming from a cardboard box.</p>
+        <p><input type="text" class="short-input" data-answer="4"> <strong>D.</strong> When his mother <strong>finally</strong> saw the muddy paw prints in the kitchen, she was quite <strong>angry</strong> and said it was <strong>cruel</strong> to keep a wild animal inside.</p>
+        <p><input type="text" class="short-input" data-answer="3"> <strong>E.</strong> He brought it inside, but the cat quickly ran to <strong>hide</strong> behind the sofa because it thought Tariq's big dog would <strong>attack</strong>.</p>
+        
+        <p><em>Write out the complete, ordered paragraph below:</em></p>
+        <textarea rows="4"></textarea>
+        
+        <button class="btn-action" onclick="checkAnswers('ex6')">Check Order</button>
+        <div class="feedback-box"></div>
+    </div>
+
+    <!-- Exercise 7 -->
+    <div class="exercise-card" id="ex7">
+        <h2>Exercise 7: Opinion Questions (Advanced)</h2>
+        <p>Answer these questions about Tariq's story. <strong>Use at least 2 vocabulary words in every answer.</strong></p>
+        <p>1. Do you <strong>agree</strong> with Tariq's mother that it can be <strong>cruel</strong> to keep a wild animal inside? Why or why not?<br><textarea rows="3"></textarea></p>
+        <p>2. Why do you think the kitten tried to <strong>hide</strong> and thought the dog would <strong>attack</strong>?<br><textarea rows="3"></textarea></p>
+        <p>3. What <strong>clever</strong> trick do you think Tariq used to make his mother stop being <strong>angry</strong>?<br><textarea rows="3"></textarea></p>
+        <p>4. How would you feel if you were the one to <strong>finally</strong> <strong>arrive</strong> home and find a box like that?<br><textarea rows="3"></textarea></p>
+        
+        <button class="btn-action" onclick="toggleSubjectiveFeedback('ex7')">Show Suggestions & Tips</button>
+        <div class="feedback-info feedback-box">
+            <h4>💡 Tips</h4>
+            <p>Make sure you highlight or underline the 2 vocabulary words you used in each answer so your teacher can easily see them.</p>
+            <h4>📝 Suggested Answers</h4>
+            <ol>
+                <li>I <strong>agree</strong> with her because a wild animal might <strong>attack</strong> the furniture if it is kept inside.</li>
+                <li>It tried to <strong>hide</strong> because it was <strong>afraid</strong> the big dog would hurt it.</li>
+                <li>I think Tariq was <strong>clever</strong> and showed his mom how sweet the kitten was, so she wouldn't be <strong>angry</strong> anymore.</li>
+                <li>If I <strong>finally</strong> <strong>arrive</strong> home and see a box, I would look at the <strong>bottom</strong> very carefully.</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- Exercise 8 -->
+    <div class="exercise-card" id="ex8">
+        <h2>Exercise 8: Story Completion (Advanced)</h2>
+        <p>Continue Tariq's story. Complete the sentences using the vocabulary words.</p>
+        <div class="story-text">
+            <p>The next morning, the kitten was no longer <strong>afraid</strong>.</p>
+            <p>However, when it was time for the kitten to eat, a new problem started. Tariq's big dog seemed <strong>angry</strong> and wanted to <input type="text" data-answer="attack"> the kitten's food.</p>
+            <p>Tariq had to think of a <input type="text" data-answer="clever"> way to keep them apart so they could eat in peace.</p>
+            <p>He put the kitten's bowl at the <input type="text" data-answer="bottom"> of the stairs where the big dog couldn't reach it.</p>
+            <p><input type="text" data-answer="finally">, after a few days, the two animals learned to <input type="text" data-answer="agree"> with each other and become best friends.</p>
+        </div>
+        <button class="btn-action" onclick="checkAnswers('ex8')">Check Answers</button>
+        <div class="feedback-box"></div>
+    </div>
+
+    <!-- Exercise 9 -->
+    <div class="exercise-card" id="ex9">
+        <h2>Exercise 9: Write About Yourself (Advanced)</h2>
+        <p>Write <strong>8–10 sentences</strong> about a real experience from your life. <strong>Rule:</strong> You must use at least <strong>5 words</strong> from the vocabulary list.</p>
+        <textarea rows="6" placeholder="A time you helped an animal, solved a problem, or convinced your parents..."></textarea>
+        
+        <button class="btn-action" onclick="toggleSubjectiveFeedback('ex9')">Show Suggestions & Tips</button>
+        <div class="feedback-info feedback-box">
+            <h4>💡 Tips</h4>
+            <p>Read your story out loud when you are finished to make sure it flows well. Count your vocabulary words to be sure you have at least 5.</p>
+            <h4>📝 Example Paragraph</h4>
+            <p style="font-style: italic; background: white; padding: 10px; border-radius: 4px; border-left: 3px solid var(--brand-color);">
+                "One day, I was walking to school when I saw a dog near the road. The dog looked very <strong>afraid</strong> of the cars. I didn't want the cars to <strong>attack</strong> or hit the poor dog. I had a <strong>clever</strong> idea and used a piece of my sandwich to call the dog over. I brought the dog to a safe place behind a wall so it could <strong>hide</strong>. <strong>Finally</strong>, a woman came running down the street crying, looking for her pet. She was so happy when we reunited!"
+            </p>
+        </div>
+    </div>
+
+    <!-- Exercise 10 -->
+    <div class="exercise-card" id="ex10">
+        <h2>Exercise 10: Challenge Writing (Advanced)</h2>
+        <p>Write a short story of <strong>100–150 words</strong>.</p>
+        <ul>
+            <li>✅ Use <strong>all 10</strong> vocabulary words.</li>
+            <li>✅ Structure: Finding something unusual &rarr; A misunderstanding &rarr; A smart solution &rarr; Happy ending.</li>
+        </ul>
+        <textarea rows="8" placeholder="Begin your story here..."></textarea>
+        
+        <button class="btn-action" onclick="toggleSubjectiveFeedback('ex10')">Show Suggestions & Tips</button>
+        <div class="feedback-info feedback-box">
+            <h4>💡 Tips</h4>
+            <p>Checklist: Does it have 100-150 words? Did you use all 10 words? Is the four-part structure clear? Have your teacher read your final draft!</p>
+            <h4>📝 Example Story</h4>
+            <p style="font-style: italic; background: white; padding: 10px; border-radius: 4px; border-left: 3px solid var(--brand-color);">
+                One day, a <strong>clever</strong> cat found a map to a hidden treasure. She walked until she was about to <strong>arrive</strong> at the spot. At the <strong>bottom</strong> of a big tree, there was a hole. Suddenly, an <strong>angry</strong> bird tried to <strong>attack</strong> her! The cat was very <strong>afraid</strong> and quickly tried to <strong>hide</strong> in the bushes.<br><br>
+                The cat realized it was <strong>cruel</strong> to fight the bird. The bird was just protecting its nest and misunderstood what the cat wanted. <strong>Finally</strong>, the cat found a shiny coin in her pocket. She threw it on the ground to distract the bird. The bird liked the shiny coin. They seemed to <strong>agree</strong> to share the space. The cat got her treasure, and the bird kept its nest safe!
+            </p>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // Function to check answers for specific exercises with right/wrong inputs
+    function checkAnswers(exerciseId) {
+        const container = document.getElementById(exerciseId);
+        const inputs = container.querySelectorAll('input[data-answer], select[data-answer]');
+        const feedbackBox = container.querySelector('.feedback-box');
+        
+        let allCorrect = true;
+        let answeredCount = 0;
+
+        inputs.forEach(input => {
+            const correctAnswer = input.getAttribute('data-answer').toLowerCase();
+            const userAnswer = input.value.trim().toLowerCase();
+            
+            // Remove previous classes
+            input.classList.remove('input-correct', 'input-error');
+            
+            if (userAnswer === "") {
+                allCorrect = false; 
+            } else if (userAnswer === correctAnswer) {
+                input.classList.add('input-correct');
+                answeredCount++;
+            } else {
+                input.classList.add('input-error');
+                allCorrect = false;
+                answeredCount++;
+            }
+        });
+
+        // Provide Feedback
+        if (answeredCount === 0) {
+            feedbackBox.className = 'feedback-box feedback-error';
+            feedbackBox.style.display = 'block';
+            feedbackBox.innerHTML = 'Please fill in some answers before checking!';
+        } else if (allCorrect && answeredCount === inputs.length) {
+            feedbackBox.className = 'feedback-box feedback-success';
+            feedbackBox.style.display = 'block';
+            feedbackBox.innerHTML = '<strong>Excellent!</strong> All your answers are correct!';
+        } else {
+            feedbackBox.className = 'feedback-box feedback-error';
+            feedbackBox.style.display = 'block';
+            feedbackBox.innerHTML = '<strong>Keep trying!</strong> The red ones are incorrect. Change them and check again.';
+        }
+    }
+
+    // Function to toggle tips and suggested answers for open-ended questions
+    function toggleSubjectiveFeedback(exerciseId) {
+        const container = document.getElementById(exerciseId);
+        const feedbackBox = container.querySelector('.feedback-info');
+        const button = container.querySelector('.btn-action');
+        
+        if (feedbackBox.style.display === 'block') {
+            feedbackBox.style.display = 'none';
+            button.innerText = 'Show Suggestions & Tips';
+        } else {
+            feedbackBox.style.display = 'block';
+            button.innerText = 'Hide Suggestions & Tips';
+        }
+    }
+</script>
+
+</body>
+</html>
